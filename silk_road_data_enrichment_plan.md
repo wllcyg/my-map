@@ -25,23 +25,37 @@ Wikidata 是最快构建 MVP 节点的来源。后续我们将编写 Node.js 或
 
 ## 阶段二：数据库结构升级 (Database Schema Updates)
 
-为了支撑更丰富的数据类型和后续的地图分层渲染，现有的 Supabase `places` 和 `routes` 表需要进行字段扩充。
+为了支撑更丰富的数据类型和后续的地图分层渲染，现有的 Supabase `places` 和 `routes` 表需要进行字段扩充。你可以直接在 Supabase 的 SQL Editor 中执行以下完整的 SQL 脚本：
 
-### `places` 表扩充
-我们需要增加节点类型和权重级别，以便在不同缩放级别下过滤显示。
-*   `type` (String/Enum): 节点分类，如 `metropolis` (大都会, 如长安), `oasis` (绿洲/中小城市, 如吐鲁番), `checkpoint` (关隘/烽燧, 如阳关), `ruin` (遗址)。
-*   `importance` (Integer, 1-5): 权重级别。`5` 为最高（世界级坐标），`1` 为最低（小型驿站）。用于前端缩放控制。
-*   `cover_image_url` (String): 用于在侧边栏显示获取到的维基百科图片。
+```sql
+-- 第一步：开启空间地理扩展 (PostGIS)
+create extension if not exists postgis;
 
-### `routes` 表扩充
-解决路线是“僵硬直线”的问题。
-*   `geometry` (JSON/GeoJSON): 弃用简单的点对点数组，改存标准的 GeoJSON `LineString` 或 `MultiLineString`。这将允许我们存储一条包含几百个转折点的弯曲路线（例如完美贴合河西走廊地形的路径）。
+-- 第二步：扩充 `places`（节点表）
+-- 1. 增加常规业务字段
+alter table public.places 
+add column if not exists type varchar(50) default 'oasis', -- 节点类型：metropolis(大都会), oasis(绿洲), checkpoint(关卡), ruin(遗址)
+add column if not exists importance smallint default 1,    -- 重要性权重：1 到 5，用于前端缩放显示
+add column if not exists cover_image_url text;             -- 封面图 URL
 
-### 性能优化：PostGIS 空间扩展
-为了支撑地图的矩形范围查询（Bounding Box）并实现极致性能：
-*   **开启扩展**：在 Supabase 中运行 `CREATE EXTENSION postgis;`。
-*   **字段类型升级**：将原先简单存放经纬度坐标的字段类型，升级为标准的空间类型 `geometry(Point, 4326)`。
-*   **建立空间索引**：为该 geometry 字段建立 `GIST` 索引。有了这层空间索引，即使数据库达到百万级点位，区域查询依然是毫秒级响应。
+-- 2. 增加标准的地理空间字段 (使用 4326 即 WGS84 经纬度坐标系)
+alter table public.places
+add column if not exists geom geometry(Point, 4326);
+
+-- 3. 建立空间索引（极其重要，百万级数据秒级查询全靠它）
+create index if not exists places_geom_idx on public.places using gist(geom);
+
+-- (可选) 兼容旧数据：将原来分开存的经纬度转化为空间几何体
+-- update public.places set geom = ST_SetSRID(ST_MakePoint(longitude, latitude), 4326) where longitude is not null;
+
+-- 第三步：扩充 `routes`（路线表）
+-- 1. 增加路线空间字段 (LineString 表示一条折线)
+alter table public.routes
+add column if not exists geometry geometry(LineString, 4326);
+
+-- 2. 建立空间索引
+create index if not exists routes_geom_idx on public.routes using gist(geometry);
+```
 
 ---
 
