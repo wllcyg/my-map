@@ -875,28 +875,28 @@
 - [x] 类型定义
 - [x] 静态 seed 数据
 - [x] MapContainer
-- [ ] PlacesLayer
-- [ ] RoutesLayer
-- [ ] TimelineBar
-- [ ] SearchBar / SearchDropdown
-- [ ] DetailPanel
-- [ ] Zustand store
+- [x] PlacesLayer
+- [x] RoutesLayer
+- [x] TimelineBar
+- [x] SearchBar / SearchDropdown
+- [x] DetailPanel
+- [x] Zustand store
 
 ## P1：没有这些就不算“可上线演示版”
-- [ ] Supabase 建表
-- [ ] `/api/map-data`
-- [ ] `/about`
-- [ ] `/sources`
-- [ ] Vercel 部署
-- [ ] 域名接入
-- [ ] 基础 SEO
+- [x] Supabase 建表
+- [x] `/api/map-data`
+- [x] `/about`
+- [x] `/sources`
+- [x] Vercel 部署
+- [x] 域名接入
+- [x] 基础 SEO
 
 ## P2：没有这些不影响上线，但影响展示效果
-- [ ] 图例面板
-- [ ] 动画细节
-- [ ] 历史风格底图优化
-- [ ] 视觉统一性优化
-- [ ] 更好的错误状态与空状态
+- [x] 图例面板
+- [x] 动画细节
+- [x] 历史风格底图优化
+- [x] 视觉统一性优化
+- [x] 更好的错误状态与空状态
 
 ---
 
