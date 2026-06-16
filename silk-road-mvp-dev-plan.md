@@ -650,12 +650,12 @@
 完成地图主视觉信息层。
 
 ### 任务
-- [ ] 创建 `PlacesLayer.tsx`
-- [ ] 创建 `RoutesLayer.tsx`
-- [ ] 节点大小按 `importance`
-- [ ] 节点样式按 `type`
-- [ ] 路线颜色按当前时期
-- [ ] 非当前时期节点半透明
+- [x] 创建 `PlacesLayer.tsx`
+- [x] 创建 `RoutesLayer.tsx`
+- [x] 节点大小按 `importance`
+- [x] 节点样式按 `type`
+- [x] 路线颜色按当前时期
+- [x] 非当前时期节点半透明
 
 ### 交付物
 - 地图上的点和线
@@ -671,14 +671,14 @@
 统一地图核心交互状态。
 
 ### 任务
-- [ ] 创建 `store/mapStore.ts`
-- [ ] 管理 `selectedPlace`
-- [ ] 管理 `activePeriod`
-- [ ] 管理 `searchQuery`
-- [ ] 管理 `isPanelOpen`
-- [ ] 管理 `isLoading / error`
-- [ ] 实现 `filteredPlaces()`
-- [ ] 实现 `searchResults()`
+- [x] 创建 `store/mapStore.ts`
+- [x] 管理 `selectedPlace`
+- [x] 管理 `activePeriod`
+- [x] 管理 `searchQuery`
+- [x] 管理 `isPanelOpen`
+- [x] 管理 `isLoading / error`
+- [x] 实现 `filteredPlaces()`
+- [x] 实现 `searchResults()`
 
 ### 交付物
 - 可供页面和组件共用的状态层
@@ -694,13 +694,13 @@
 把“看地图”升级为“看内容”。
 
 ### 任务
-- [ ] 创建 `DetailPanel.tsx`
-- [ ] 创建 `PeriodNote.tsx`
-- [ ] 创建 `RelatedPlaces.tsx`
-- [ ] 复用 `shadcn/ui` 的 `Sheet`、`Accordion`、`Badge`、`Separator`
-- [ ] 创建 `Badge.tsx`
-- [ ] 创建 `SourceTag.tsx`
-- [ ] 实现关闭、切换、降级展示
+- [x] 创建 `DetailPanel.tsx`
+- [x] 创建 `PeriodNote.tsx`
+- [x] 创建 `RelatedPlaces.tsx`
+- [x] 复用 `shadcn/ui` 的 `Sheet`、`Accordion`、`Badge`、`Separator`
+- [x] 创建 `Badge.tsx`
+- [x] 创建 `SourceTag.tsx`
+- [x] 实现关闭、切换、降级展示
 
 ### 交付物
 - 右侧详情面板完整可用
@@ -716,13 +716,13 @@
 让用户能快速定位节点。
 
 ### 任务
-- [ ] 创建 `SearchBar.tsx`
-- [ ] 创建 `SearchDropdown.tsx`
-- [ ] 复用 `shadcn/ui` 的 `Input`、`Command`、`Popover`
-- [ ] 创建 `searchPlaces.ts`
-- [ ] 精确匹配 + startsWith
-- [ ] 点击搜索结果触发 flyTo
-- [ ] 打开详情面板
+- [x] 创建 `SearchBar.tsx`
+- [x] 创建 `SearchDropdown.tsx`
+- [x] 复用 `shadcn/ui` 的 `Input`、`Command`、`Popover`
+- [x] 创建 `searchPlaces.ts`
+- [x] 精确匹配 + startsWith
+- [x] 点击搜索结果触发 flyTo
+- [x] 打开详情面板
 
 ### 交付物
 - 可用搜索体验
@@ -738,11 +738,11 @@
 实现一期最重要的全局筛选器。
 
 ### 任务
-- [ ] 创建 `TimelineBar.tsx`
-- [ ] 3 个固定时期节点
-- [ ] 当前时期高亮
-- [ ] 点击切换 activePeriod
-- [ ] 联动节点与路线视觉
+- [x] 创建 `TimelineBar.tsx`
+- [x] 3 个固定时期节点
+- [x] 当前时期高亮
+- [x] 点击切换 activePeriod
+- [x] 联动节点与路线视觉
 
 ### 交付物
 - 可用时期切换栏
@@ -758,13 +758,13 @@
 把静态 Demo 升级为线上可维护版本。
 
 ### 任务
-- [ ] Supabase 建表
-- [ ] 导入数据
-- [ ] 创建 `lib/supabase.ts`
-- [ ] 实现 `app/api/map-data/route.ts`
-- [ ] 实现 `app/api/places/[id]/route.ts`
-- [ ] 实现 `app/api/sources/route.ts`
-- [ ] 预留 `app/api/search/route.ts`
+- [x] Supabase 建表
+- [x] 导入数据
+- [x] 创建 `lib/supabase.ts`
+- [x] 实现 `app/api/map-data/route.ts`
+- [x] 实现 `app/api/places/[id]/route.ts`
+- [x] 实现 `app/api/sources/route.ts`
+- [x] 预留 `app/api/search/route.ts`
 
 ### 交付物
 - 稳定的地图数据 API
@@ -780,12 +780,12 @@
 补齐“可给别人看”的外围页面。
 
 ### 任务
-- [ ] 完成 `/about`
-- [ ] 完成 `/sources`
-- [ ] 复用 `shadcn/ui` 的 `Card`、`Separator`、`Accordion`
-- [ ] 配置 metadata
-- [ ] 配置 OG 基础信息
-- [ ] 按需使用页面级 `generateMetadata`
+- [x] 完成 `/about`
+- [x] 完成 `/sources`
+- [x] 复用 `shadcn/ui` 的 `Card`、`Separator`、`Accordion`
+- [x] 配置 metadata
+- [x] 配置 OG 基础信息
+- [x] 按需使用页面级 `generateMetadata`
 
 ### 交付物
 - 关于页
@@ -803,11 +803,11 @@
 让项目真正在线上可访问。
 
 ### 任务
-- [ ] 配置 Vercel 项目
-- [ ] 配置环境变量
-- [ ] 首次部署
-- [ ] 绑定自定义域名
-- [ ] Cloudflare 配置 DNS / HTTPS / 代理
+- [x] 配置 Vercel 项目
+- [x] 配置环境变量
+- [x] 首次部署
+- [x] 绑定自定义域名
+- [x] Cloudflare 配置 DNS / HTTPS / 代理
 
 ### 交付物
 - 可公开访问的网址
@@ -823,12 +823,12 @@
 提升展示级别，而不是只停留在“功能通了”。
 
 ### 任务
-- [ ] 底图样式优化
-- [ ] 节点视觉优化
-- [ ] 面板动画
-- [ ] 切换动画
-- [ ] 图例面板
-- [ ] 空状态和错误状态优化
+- [x] 底图样式优化
+- [x] 节点视觉优化
+- [x] 面板动画
+- [x] 切换动画
+- [x] 图例面板
+- [x] 空状态和错误状态优化
 
 ### 交付物
 - 可展示版本 UI
