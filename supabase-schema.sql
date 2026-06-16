@@ -82,3 +82,19 @@ DROP POLICY IF EXISTS "Allow public insert on routes" ON routes;
 CREATE POLICY "Allow public insert on routes" ON routes FOR INSERT WITH CHECK (true);
 DROP POLICY IF EXISTS "Allow public update on routes" ON routes;
 CREATE POLICY "Allow public update on routes" ON routes FOR UPDATE USING (true);
+
+-- 5. 空间地理扩展 (PostGIS)
+CREATE EXTENSION IF NOT EXISTS postgis;
+
+-- 扩充 places 表
+ALTER TABLE public.places 
+ADD COLUMN IF NOT EXISTS cover_image_url TEXT,
+ADD COLUMN IF NOT EXISTS geom geometry(Point, 4326);
+
+CREATE INDEX IF NOT EXISTS places_geom_idx ON public.places USING gist(geom);
+
+-- 扩充 routes 表
+ALTER TABLE public.routes
+ADD COLUMN IF NOT EXISTS geometry geometry(LineString, 4326);
+
+CREATE INDEX IF NOT EXISTS routes_geom_idx ON public.routes USING gist(geometry);

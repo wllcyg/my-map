@@ -2,11 +2,13 @@ import { PeriodId, Place, Route } from "@/types/map";
 
 export function isPlaceInPeriod(place: Place, activePeriod: PeriodId | null): boolean {
   if (!activePeriod) return true; // 如果没有选中任何时期，展示全部
+  if (!place.periods) return true; // 如果数据没有时期划分，默认也显示
   return place.periods.includes(activePeriod);
 }
 
 export function isRouteInPeriod(route: Route, activePeriod: PeriodId | null): boolean {
   if (!activePeriod) return true;
+  if (!route.periods) return true;
   return route.periods.includes(activePeriod);
 }
 

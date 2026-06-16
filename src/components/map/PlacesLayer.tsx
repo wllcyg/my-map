@@ -26,7 +26,7 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
             id: place.id,
             name: place.name,
             type: place.type,
-            importance: place.importance,
+            importance: parseInt(place.importance as string) || 1,
             isActive,
             isSelected: place.id === selectedPlace?.id,
           },
@@ -37,6 +37,22 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
         };
       }),
     };
+
+    const lodFilter: any = [
+      "all",
+      [
+        "step",
+        ["zoom"],
+        [">=", ["get", "importance"], 4], // 缩放小于5时
+        5, [">=", ["get", "importance"], 3], // 缩放>=5时
+        8, [">=", ["get", "importance"], 1]  // 缩放>=8时全显
+      ],
+      [
+        "any",
+        [">=", ["zoom"], 5],
+        ["!=", ["get", "type"], "ruin"]
+      ]
+    ];
 
     if (!map.getSource("silk-road-places")) {
       map.addSource("silk-road-places", {
@@ -49,14 +65,17 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
         id: "places-circle-halo",
         type: "circle",
         source: "silk-road-places",
+        filter: lodFilter,
         paint: {
           "circle-radius": [
             "match",
             ["get", "importance"],
-            "high", 14,
-            "medium", 12,
-            "low", 10,
-            12,
+            5, 16,
+            4, 12,
+            3, 10,
+            2, 8,
+            1, 6,
+            10,
           ],
           "circle-color": "#fcd34d", // amber-300
           "circle-opacity": ["case", ["==", ["get", "isSelected"], true], 0.6, 0],
@@ -69,6 +88,7 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
         id: "places-circle",
         type: "circle",
         source: "silk-road-places",
+        filter: lodFilter,
         paint: {
           // 根据重要性设置圆圈大小，选中的再微放大
           "circle-radius": [
@@ -76,10 +96,12 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
             [
               "match",
               ["get", "importance"],
-              "high", 7,
-              "medium", 5,
-              "low", 3,
-              5,
+              5, 8,
+              4, 6,
+              3, 4,
+              2, 3,
+              1, 2,
+              4,
             ],
             ["case", ["==", ["get", "isSelected"], true], 2, 0]
           ],
@@ -87,10 +109,13 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
           "circle-color": [
             "match",
             ["get", "type"],
-            "city", "#ea580c",     // orange-600
-            "region", "#059669",   // emerald-600
-            "landmark", "#7c3aed", // violet-600
-            "#64748b"              // slate-500
+            "metropolis", "#fbbf24", // amber-400
+            "capital", "#fbbf24",    // amber-400 (都城)
+            "oasis", "#10b981",      // emerald-500
+            "port", "#0ea5e9",       // sky-500 (海洋蓝)
+            "checkpoint", "#64748b", // slate-500
+            "ruin", "#a8a29e",       // stone-400
+            "#94a3b8"              // slate-400
           ],
           "circle-stroke-width": ["case", ["==", ["get", "isSelected"], true], 3, 2],
           "circle-stroke-color": ["case", ["==", ["get", "isSelected"], true], "#fcd34d", "#ffffff"],
@@ -105,6 +130,7 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
         id: "places-label",
         type: "symbol",
         source: "silk-road-places",
+        filter: lodFilter,
         layout: {
           "text-field": ["get", "name"],
           "text-font": ["Open Sans Regular", "Arial Unicode MS Regular"],

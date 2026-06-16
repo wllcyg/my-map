@@ -11,6 +11,7 @@ import { Star, ScrollText, MapPin, Compass, ShieldCheck, Calendar, ChevronRight,
 const getTypeLabel = (type: string) => {
   switch (type) {
     case "capital": return "都城";
+    case "metropolis": return "都市";
     case "hub": return "枢纽";
     case "port": return "港口";
     case "fortress": return "要塞";
@@ -73,9 +74,22 @@ export default function DetailPanel() {
         {/* 悬浮面板实体 */}
         <div className="h-[96vh] my-[2vh] mr-[2vh] rounded-[2.5rem] overflow-hidden relative bg-[#FAF7F2] shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-white/50 flex flex-col">
           
-          {/* 顶部插画占位与渐变背景 */}
-          <div className="absolute top-0 left-0 w-full h-80 bg-gradient-to-b from-[#E7AC71]/60 via-[#F3D7B5]/30 to-[#FAF7F2] pointer-events-none z-0">
-            <div className="absolute top-10 right-10 w-40 h-40 opacity-20 bg-[url('https://api.dicebear.com/7.x/shapes/svg?seed=ancient')] bg-contain bg-no-repeat pointer-events-none mix-blend-multiply" />
+          {/* 顶部插画/真实图片占位与渐变背景 */}
+          <div className="absolute top-0 left-0 w-full h-80 pointer-events-none z-0">
+            {displayPlace.cover_image_url ? (
+              <>
+                <div 
+                  className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-multiply transition-opacity duration-700" 
+                  style={{ backgroundImage: `url(${displayPlace.cover_image_url})` }} 
+                />
+                {/* 叠加渐变，让图片平滑过渡到底部背景色 */}
+                <div className="absolute inset-0 bg-gradient-to-b from-[#E7AC71]/20 via-[#F3D7B5]/80 to-[#FAF7F2]" />
+              </>
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-b from-[#E7AC71]/60 via-[#F3D7B5]/30 to-[#FAF7F2]">
+                <div className="absolute top-10 right-10 w-40 h-40 opacity-20 bg-[url('https://api.dicebear.com/7.x/shapes/svg?seed=ancient')] bg-contain bg-no-repeat pointer-events-none mix-blend-multiply" />
+              </div>
+            )}
           </div>
 
           {/* 自定义关闭按钮 */}
@@ -183,14 +197,14 @@ export default function DetailPanel() {
                     <span className="text-[11px] font-semibold tracking-wider uppercase">活跃时期</span>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
-                    {displayPlace.periods.slice(0, 2).map((p: string) => (
+                    {(displayPlace.periods || []).slice(0, 2).map((p: string) => (
                       <span key={p} className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-orange-100/50 text-orange-800 border border-orange-200/50">
                         {p}
                       </span>
                     ))}
-                    {displayPlace.periods.length > 2 && (
+                    {(displayPlace.periods || []).length > 2 && (
                       <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200/50">
-                        +{displayPlace.periods.length - 2}
+                        +{(displayPlace.periods || []).length - 2}
                       </span>
                     )}
                   </div>

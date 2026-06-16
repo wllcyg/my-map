@@ -1,6 +1,6 @@
 export type PeriodId = "han" | "tang" | "mongol";
 
-export type PlaceType = "capital" | "oasis" | "port" | "gate" | "ruin" | "other";
+export type PlaceType = "capital" | "metropolis" | "oasis" | "port" | "gate" | "checkpoint" | "ruin" | "other";
 
 export type Importance = "high" | "medium" | "low";
 
@@ -24,6 +24,7 @@ export interface Place {
   certainty: Certainty;
   related_place_ids?: string[];
   source_ids?: string[];
+  cover_image_url?: string | null;
 }
 
 export type RouteType = "land" | "sea";

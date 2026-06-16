@@ -1,0 +1,212 @@
+[
+  {
+    "wikidata_id": "Q87",
+    "name": "亚历山大",
+    "description": "古埃及重要港口城市，曾是希腊化时代的文化与贸易中心。",
+    "longitude": 29.8925,
+    "latitude": 31.1975,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/AlexandriaSkyline.jpg",
+    "type": "port",
+    "importance": 4
+  },
+  {
+    "wikidata_id": "Q220",
+    "name": "罗马",
+    "description": "古罗马帝国的首都，欧洲历史最悠久的城市之一。",
+    "longitude": 12.482777777,
+    "latitude": 41.893055555,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Rome%20Skyline%20%288012016319%29.jpg",
+    "type": "metropolis",
+    "importance": 5
+  },
+  {
+    "wikidata_id": "Q641",
+    "name": "威尼斯",
+    "description": "中世纪地中海贸易枢纽，以水城和艺术闻名于世。",
+    "longitude": 12.331944444,
+    "latitude": 45.439722222,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Floating%20city.tif",
+    "type": "port",
+    "importance": 4
+  },
+  {
+    "wikidata_id": "Q1449",
+    "name": "热那亚",
+    "description": "意大利西北部的重要海港，曾是地中海贸易强国。",
+    "longitude": 8.933983333,
+    "latitude": 44.407186111,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Genova%20panorama%20centro%20storico%20da%20villetta%20Di%20Negro.jpg",
+    "type": "port",
+    "importance": 4
+  },
+  {
+    "wikidata_id": "Q2449",
+    "name": "摩加迪休",
+    "description": "索马里首都，东非海岸的重要商贸中心。",
+    "longitude": 45.341944444,
+    "latitude": 2.039166666,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Pictures%20from%20an%20armed%20convoy%20trip%20in%20Mogadishu.jpg",
+    "type": "port",
+    "importance": 3
+  },
+  {
+    "wikidata_id": "Q3826",
+    "name": "马斯喀特",
+    "description": "阿曼首都，阿拉伯半岛东岸的古老港口城市。",
+    "longitude": 58.592222222,
+    "latitude": 23.613888888,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Old%20city%20of%20Maskat.jpg",
+    "type": "port",
+    "importance": 4
+  },
+  {
+    "wikidata_id": "Q4629",
+    "name": "苏拉特",
+    "description": "印度西海岸的重要港口，曾是莫卧儿帝国的贸易中心。",
+    "longitude": 72.84,
+    "latitude": 21.205,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Surat%20at%20night.JPG",
+    "type": "port",
+    "importance": 4
+  },
+  {
+    "wikidata_id": "Q8131",
+    "name": "巨港",
+    "description": "印尼苏门答腊岛的重要港口，古代海上丝绸之路节点。",
+    "longitude": 104.764444444,
+    "latitude": -2.983333333,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Montage%20of%20Palembang.jpg",
+    "type": "port",
+    "importance": 3
+  },
+  {
+    "wikidata_id": "Q16572",
+    "name": "广州市",
+    "description": "中国南方重要城市，古代海上丝绸之路的起点之一。",
+    "longitude": 113.26,
+    "latitude": 23.13,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Canton%20Tower%2020220626%20%28cropped%29.jpg",
+    "type": "port",
+    "importance": 4
+  },
+  {
+    "wikidata_id": "Q28729",
+    "name": "科泽科德",
+    "description": "印度西南部港口城市，曾是香料贸易的重要中心。",
+    "longitude": 75.780277777,
+    "latitude": 11.247777777,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Calicut-bus-stand.JPG",
+    "type": "port",
+    "importance": 3
+  },
+  {
+    "wikidata_id": "Q35381",
+    "name": "科伦坡",
+    "description": "斯里兰卡最大城市，印度洋贸易的重要港口。",
+    "longitude": 79.860555555,
+    "latitude": 6.926666666,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Colombo%20skyline%202024.jpg",
+    "type": "port",
+    "importance": 3
+  },
+  {
+    "wikidata_id": "Q42780",
+    "name": "宁波市",
+    "description": "中国东部沿海城市，古代海上丝绸之路的重要港口。",
+    "longitude": 121.549166666,
+    "latitude": 29.875,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Ningbo%20South%20Business%20District%2024-09-2018.jpg",
+    "type": "port",
+    "importance": 4
+  },
+  {
+    "wikidata_id": "Q48195",
+    "name": "巴士拉",
+    "description": "伊拉克南部重要城市，两河流域的贸易中心。",
+    "longitude": 47.81,
+    "latitude": 30.515,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Basra-Shatt-Al-Arab.jpg",
+    "type": "metropolis",
+    "importance": 3
+  },
+  {
+    "wikidata_id": "Q61089",
+    "name": "马六甲市",
+    "description": "马来西亚马六甲州首府，古代海上丝绸之路的关键港口。",
+    "longitude": 102.251111111,
+    "latitude": 2.188888888,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/2016%20Malakka%2C%20Plac%20Holenderski%20%2804%29.jpg",
+    "type": "port",
+    "importance": 5
+  },
+  {
+    "wikidata_id": "Q68481",
+    "name": "福州市",
+    "description": "福建省省会，古代海上丝绸之路的重要城市。",
+    "longitude": 119.291666666,
+    "latitude": 26.076944444,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Fuzhou%20Taixi%20CBD.jpg",
+    "type": "port",
+    "importance": 3
+  },
+  {
+    "wikidata_id": "Q68695",
+    "name": "泉州市",
+    "description": "中国海上丝绸之路的重要港口，宋元时期繁荣的商贸中心。",
+    "longitude": 118.58583,
+    "latitude": 24.91389,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/20230130%20Old%20City%20of%20Quanzhou%2001.jpg",
+    "type": "port",
+    "importance": 4
+  },
+  {
+    "wikidata_id": "Q131694",
+    "name": "亞丁",
+    "description": "位于阿拉伯半岛南部的古老港口，是印度洋贸易的重要枢纽。",
+    "longitude": 45.033333333,
+    "latitude": 12.8,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Old%20Town%20Aden%20Yemen.jpg",
+    "type": "port",
+    "importance": 4
+  },
+  {
+    "wikidata_id": "Q168056",
+    "name": "錫拉夫港",
+    "description": "波斯湾的重要港口，古代海上贸易的关键节点。",
+    "longitude": 52.346111111,
+    "latitude": 27.665833333,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/%D8%B3%D8%A7%D8%AD%D9%84%20%D8%A8%D9%86%D8%AF%D8%B1%20%D8%B3%DB%8C%D8%B1%D8%A7%D9%81.jpg",
+    "type": "port",
+    "importance": 4
+  },
+  {
+    "wikidata_id": "Q321475",
+    "name": "奎隆",
+    "description": "印度西南海岸的古老港口，是古代海上丝绸之路的重要站点。",
+    "longitude": 76.586388888,
+    "latitude": 8.885277777,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Kollam%20Collage.png",
+    "type": "port",
+    "importance": 4
+  },
+  {
+    "wikidata_id": "Q374365",
+    "name": "吉达",
+    "description": "沙特阿拉伯红海沿岸的重要城市，是朝觐路线上的关键节点。",
+    "longitude": 39.172777777,
+    "latitude": 21.542777777,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Jeddah%20Waterfront%202025%20%28cropped%29.jpg",
+    "type": "port",
+    "importance": 4
+  },
+  {
+    "wikidata_id": "Q888643",
+    "name": "霍爾木茲",
+    "description": "霍尔木兹海峡的咽喉要地，古代海上贸易的战略据点。",
+    "longitude": 56.452777777,
+    "latitude": 27.095,
+    "cover_image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/City%20of%20Hormuz.jpg",
+    "type": "checkpoint",
+    "importance": 4
+  }
+]
