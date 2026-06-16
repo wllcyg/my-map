@@ -1,0 +1,480 @@
+{
+  "periods": [
+    {
+      "id": "han",
+      "name": "汉代",
+      "range": "公元前202年 - 公元220年",
+      "description": "张骞凿空西域，丝绸之路正式开通。"
+    },
+    {
+      "id": "tang",
+      "name": "唐代",
+      "range": "公元618年 - 公元907年",
+      "description": "丝绸之路发展到鼎盛时期，东西方文化交流繁荣。"
+    },
+    {
+      "id": "mongol",
+      "name": "蒙元时期",
+      "range": "公元1206年 - 公元1368年",
+      "description": "蒙古帝国打通了亚欧大陆，海上丝路也空前繁荣。"
+    }
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "title": "《史记·大宛列传》",
+      "author": "司马迁",
+      "description": "记载了张骞出使西域的见闻。"
+    },
+    {
+      "id": "s2",
+      "title": "《大唐西域记》",
+      "author": "玄奘",
+      "description": "记录了唐代西域及印度的地理与风土人情。"
+    },
+    {
+      "id": "s3",
+      "title": "《马可·波罗游记》",
+      "author": "马可·波罗",
+      "description": "详细记载了蒙元时期的中国及沿途所见所闻。"
+    },
+    {
+      "id": "s4",
+      "title": "《诸蕃志》",
+      "author": "赵汝适",
+      "description": "记载了宋代海上丝绸之路沿线各国的风土人情和物产。"
+    },
+    {
+      "id": "s5",
+      "title": "《岛夷志略》",
+      "author": "汪大渊",
+      "description": "元代航海家亲历数十国后写成的纪实著作。"
+    }
+  ],
+  "places": [
+    {
+      "id": "p_changan",
+      "name": "长安",
+      "aliases": ["西安", "Chang'an", "Xi'an"],
+      "description": "丝绸之路的东端起点，汉唐两代的政治、经济和文化中心。",
+      "type": "capital",
+      "importance": "high",
+      "coordinates": [108.9398, 34.3416],
+      "periods": ["han", "tang"],
+      "period_notes": [
+        { "period_id": "han", "note": "汉朝首都，张骞出使西域的出发地。" },
+        { "period_id": "tang", "note": "世界第一大都会，万国来朝的国际性都城。" }
+      ],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_dunhuang", "p_hangzhou"],
+      "source_ids": ["s1", "s2"]
+    },
+    {
+      "id": "p_dunhuang",
+      "name": "敦煌",
+      "aliases": ["沙州", "Dunhuang"],
+      "description": "河西走廊的最西端，丝路上的重要咽喉和佛教艺术宝库。",
+      "type": "oasis",
+      "importance": "high",
+      "coordinates": [94.6618, 40.1421],
+      "periods": ["han", "tang", "mongol"],
+      "period_notes": [
+        { "period_id": "han", "note": "设敦煌郡，扼守玉门关和阳关。" },
+        { "period_id": "tang", "note": "莫高窟壁画艺术达到顶峰。" }
+      ],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_changan", "p_turpan", "p_kashgar", "p_loulan"],
+      "source_ids": ["s1", "s2"]
+    },
+    {
+      "id": "p_turpan",
+      "name": "吐鲁番",
+      "aliases": ["高昌", "交河", "Turpan"],
+      "description": "天山南麓的重要绿洲城市，历代均为西域政治、经济与文化重镇。",
+      "type": "oasis",
+      "importance": "medium",
+      "coordinates": [89.1841, 42.9476],
+      "periods": ["han", "tang", "mongol"],
+      "period_notes": [
+        { "period_id": "tang", "note": "唐朝在此设安西都护府，辖理西域。" }
+      ],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_dunhuang", "p_kuqa"],
+      "source_ids": ["s2"]
+    },
+    {
+      "id": "p_loulan",
+      "name": "楼兰",
+      "aliases": ["鄯善", "Loulan"],
+      "description": "罗布泊西岸的古代西域重镇，汉代丝绸之路必经之地，后因环境恶化被废弃。",
+      "type": "ruin",
+      "importance": "medium",
+      "coordinates": [89.9142, 40.5186],
+      "periods": ["han"],
+      "period_notes": [
+        { "period_id": "han", "note": "丝绸之路上著名的王国，曾为中原王朝与匈奴必争之地。" }
+      ],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_dunhuang", "p_khotan"],
+      "source_ids": ["s1"]
+    },
+    {
+      "id": "p_kuqa",
+      "name": "库车",
+      "aliases": ["龟兹", "Kuqa"],
+      "description": "塔里木盆地北缘重镇，古代龟兹国所在地，音乐和佛教文化极其发达。",
+      "type": "oasis",
+      "importance": "high",
+      "coordinates": [82.9664, 41.7196],
+      "periods": ["han", "tang"],
+      "period_notes": [
+        { "period_id": "tang", "note": "安西四镇之一，名僧鸠摩罗什的故乡。" }
+      ],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_turpan", "p_kashgar"],
+      "source_ids": ["s2"]
+    },
+    {
+      "id": "p_khotan",
+      "name": "和田",
+      "aliases": ["于阗", "Khotan"],
+      "description": "塔里木盆地南缘的绿洲王国，以盛产美玉和丝织品闻名。",
+      "type": "oasis",
+      "importance": "high",
+      "coordinates": [79.9222, 37.1122],
+      "periods": ["han", "tang", "mongol"],
+      "period_notes": [
+        { "period_id": "tang", "note": "安西四镇之一，著名的佛教文化中心。" },
+        { "period_id": "mongol", "note": "马可波罗称其居民多经营手工业和商业。" }
+      ],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_loulan", "p_kashgar"],
+      "source_ids": ["s2", "s3"]
+    },
+    {
+      "id": "p_kashgar",
+      "name": "喀什",
+      "aliases": ["疏勒", "Kashgar"],
+      "description": "塔里木盆地西缘的重镇，南北两道在此交汇，通往中亚的必经之路。",
+      "type": "oasis",
+      "importance": "high",
+      "coordinates": [75.9897, 39.4677],
+      "periods": ["han", "tang", "mongol"],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_khotan", "p_kuqa", "p_samarkand"],
+      "source_ids": ["s1", "s2", "s3"]
+    },
+    {
+      "id": "p_samarkand",
+      "name": "撒马尔罕",
+      "aliases": ["康国", "Samarkand"],
+      "description": "中亚粟特人的中心，连接东西方贸易的核心枢纽。",
+      "type": "capital",
+      "importance": "high",
+      "coordinates": [66.9749, 39.6542],
+      "periods": ["han", "tang", "mongol"],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_kashgar", "p_merv"],
+      "source_ids": ["s2", "s3"]
+    },
+    {
+      "id": "p_merv",
+      "name": "马雷",
+      "aliases": ["木鹿", "Merv"],
+      "description": "古代呼罗珊地区的重要城市，丝路上的大都会，曾是世界上人口最多的城市之一。",
+      "type": "capital",
+      "importance": "medium",
+      "coordinates": [62.1833, 37.6667],
+      "periods": ["han", "tang", "mongol"],
+      "period_notes": [
+        { "period_id": "tang", "note": "阿拉伯帝国向东扩张的重要据点。" },
+        { "period_id": "mongol", "note": "被蒙古军队彻底摧毁，失去昔日辉煌。" }
+      ],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_samarkand", "p_baghdad"],
+      "source_ids": ["s2"]
+    },
+    {
+      "id": "p_baghdad",
+      "name": "巴格达",
+      "aliases": ["Baghdad"],
+      "description": "阿拔斯王朝首都，东西方文化交流的熔炉，极度繁华。",
+      "type": "capital",
+      "importance": "high",
+      "coordinates": [44.3661, 33.3152],
+      "periods": ["tang", "mongol"],
+      "period_notes": [
+        { "period_id": "tang", "note": "当时世界上最繁华的城市之一，阿拉伯帝国中心。" }
+      ],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_merv", "p_damascus"],
+      "source_ids": ["s2"]
+    },
+    {
+      "id": "p_damascus",
+      "name": "大马士革",
+      "aliases": ["Damascus"],
+      "description": "位于叙利亚，世界上最古老的持续有人居住的城市之一。",
+      "type": "capital",
+      "importance": "medium",
+      "coordinates": [36.2913, 33.5138],
+      "periods": ["han", "tang", "mongol"],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_baghdad", "p_antioch", "p_palmyra"],
+      "source_ids": []
+    },
+    {
+      "id": "p_palmyra",
+      "name": "帕尔米拉",
+      "aliases": ["Palmyra"],
+      "description": "叙利亚沙漠中的绿洲城市，沟通波斯与罗马帝国贸易的桥梁。",
+      "type": "ruin",
+      "importance": "medium",
+      "coordinates": [38.2678, 34.5539],
+      "periods": ["han"],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_damascus", "p_antioch"],
+      "source_ids": []
+    },
+    {
+      "id": "p_antioch",
+      "name": "安条克",
+      "aliases": ["Antioch"],
+      "description": "地中海东岸的重镇，丝绸运往欧洲的集散地。",
+      "type": "capital",
+      "importance": "high",
+      "coordinates": [36.1601, 36.2023],
+      "periods": ["han", "tang"],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_palmyra", "p_constantinople", "p_rome"],
+      "source_ids": []
+    },
+    {
+      "id": "p_constantinople",
+      "name": "君士坦丁堡",
+      "aliases": ["拂菻", "伊斯坦布尔", "Constantinople", "Istanbul"],
+      "description": "拜占庭帝国首都，沟通欧亚大陆的桥梁。",
+      "type": "capital",
+      "importance": "high",
+      "coordinates": [28.9784, 41.0082],
+      "periods": ["tang", "mongol"],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_antioch", "p_rome"],
+      "source_ids": ["s2"]
+    },
+    {
+      "id": "p_rome",
+      "name": "罗马",
+      "aliases": ["大秦", "Rome"],
+      "description": "罗马帝国首都，古代丝绸之路的西端终点之一。",
+      "type": "capital",
+      "importance": "high",
+      "coordinates": [12.4964, 41.9028],
+      "periods": ["han"],
+      "period_notes": [
+        { "period_id": "han", "note": "汉代称之为大秦，对中国丝绸有着极高需求。" }
+      ],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_antioch"],
+      "source_ids": ["s1"]
+    },
+    {
+      "id": "p_alexandria",
+      "name": "亚历山大",
+      "aliases": ["Alexandria"],
+      "description": "埃及的著名海港，连接红海航线与地中海世界。",
+      "type": "port",
+      "importance": "medium",
+      "coordinates": [29.9187, 31.2001],
+      "periods": ["han", "tang", "mongol"],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_aden", "p_rome"],
+      "source_ids": []
+    },
+    {
+      "id": "p_aden",
+      "name": "亚丁",
+      "aliases": ["阿丹", "Aden"],
+      "description": "红海与印度洋交汇处的咽喉要道，海上丝路重要中转站。",
+      "type": "port",
+      "importance": "medium",
+      "coordinates": [44.9782, 12.8023],
+      "periods": ["tang", "mongol"],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_alexandria", "p_hormuz", "p_calicut"],
+      "source_ids": ["s4", "s5"]
+    },
+    {
+      "id": "p_hormuz",
+      "name": "霍尔木兹",
+      "aliases": ["忽鲁谟斯", "Hormuz"],
+      "description": "控制波斯湾的重要商业城邦，往来东西方的船只常在此停靠。",
+      "type": "port",
+      "importance": "medium",
+      "coordinates": [56.4608, 27.0603],
+      "periods": ["mongol"],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_aden", "p_calicut"],
+      "source_ids": ["s3", "s5"]
+    },
+    {
+      "id": "p_calicut",
+      "name": "卡利卡特",
+      "aliases": ["古里", "Calicut"],
+      "description": "印度西南海岸繁华的港口，出产大量香料，吸引了众多中国和阿拉伯商人。",
+      "type": "port",
+      "importance": "high",
+      "coordinates": [75.7804, 11.2588],
+      "periods": ["tang", "mongol"],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_hormuz", "p_aden", "p_malacca"],
+      "source_ids": ["s4", "s5"]
+    },
+    {
+      "id": "p_malacca",
+      "name": "马六甲",
+      "aliases": ["满剌加", "Malacca"],
+      "description": "东南亚最重要的海上贸易枢纽之一，扼守马六甲海峡。",
+      "type": "port",
+      "importance": "high",
+      "coordinates": [102.2501, 2.1896],
+      "periods": ["tang", "mongol"],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_calicut", "p_guangzhou", "p_quanzhou"],
+      "source_ids": ["s4", "s5"]
+    },
+    {
+      "id": "p_mogadishu",
+      "name": "摩加迪沙",
+      "aliases": ["木骨都束", "Mogadishu"],
+      "description": "东非海岸重要城邦，海上丝绸之路与非洲大陆交流的门户。",
+      "type": "port",
+      "importance": "low",
+      "coordinates": [45.3182, 2.0469],
+      "periods": ["mongol"],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_aden"],
+      "source_ids": ["s5"]
+    },
+    {
+      "id": "p_guangzhou",
+      "name": "广州",
+      "aliases": ["番禺", "Guangzhou", "Canton"],
+      "description": "中国最重要的对外贸易港口之一，海上丝绸之路的重要起点。",
+      "type": "port",
+      "importance": "high",
+      "coordinates": [113.2644, 23.1291],
+      "periods": ["han", "tang", "mongol"],
+      "period_notes": [
+        { "period_id": "tang", "note": "设市舶司管理对外贸易，番坊有大量外商居住。" }
+      ],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_quanzhou", "p_malacca"],
+      "source_ids": ["s4", "s5"]
+    },
+    {
+      "id": "p_quanzhou",
+      "name": "泉州",
+      "aliases": ["刺桐", "Zaiton", "Quanzhou"],
+      "description": "宋元时期东方第一大港，被马可波罗誉为世界最大的港口之一。",
+      "type": "port",
+      "importance": "high",
+      "coordinates": [118.6758, 24.8739],
+      "periods": ["tang", "mongol"],
+      "period_notes": [
+        { "period_id": "mongol", "note": "元代极度繁荣，各国商船汇聚于此。" }
+      ],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_guangzhou", "p_ningbo", "p_malacca"],
+      "source_ids": ["s3", "s4", "s5"]
+    },
+    {
+      "id": "p_ningbo",
+      "name": "宁波",
+      "aliases": ["明州", "Ningbo"],
+      "description": "中国重要的港口城市，通往日本和高丽的主要港口。",
+      "type": "port",
+      "importance": "medium",
+      "coordinates": [121.5439, 29.8683],
+      "periods": ["tang", "mongol"],
+      "period_notes": [
+        { "period_id": "tang", "note": "遣唐使多在明州登陆。" }
+      ],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_quanzhou", "p_hangzhou"],
+      "source_ids": []
+    },
+    {
+      "id": "p_hangzhou",
+      "name": "杭州",
+      "aliases": ["临安", "Hangzhou", "Kinsay"],
+      "description": "南宋都城，大运河的南端起点，物产丰饶。",
+      "type": "capital",
+      "importance": "high",
+      "coordinates": [120.1551, 30.2741],
+      "periods": ["tang", "mongol"],
+      "period_notes": [
+        { "period_id": "mongol", "note": "马可波罗惊叹其为‘世界上最美丽华贵之天城’。" }
+      ],
+      "certainty": "confirmed",
+      "related_place_ids": ["p_changan", "p_ningbo"],
+      "source_ids": ["s3"]
+    }
+  ],
+  "routes": [
+    {
+      "id": "r_land_main",
+      "name": "陆上丝绸之路主干道",
+      "type": "land",
+      "periods": ["han", "tang", "mongol"],
+      "description": "从长安出发，经河西走廊，跨越葱岭到达中亚和欧洲。",
+      "coordinates": [
+        [108.9398, 34.3416],
+        [94.6618, 40.1421],
+        [89.1841, 42.9476],
+        [82.9664, 41.7196],
+        [75.9897, 39.4677],
+        [66.9749, 39.6542],
+        [62.1833, 37.6667],
+        [44.3661, 33.3152],
+        [36.2913, 33.5138],
+        [36.1601, 36.2023],
+        [28.9784, 41.0082],
+        [12.4964, 41.9028]
+      ],
+      "source_ids": ["s1", "s2"]
+    },
+    {
+      "id": "r_land_south",
+      "name": "陆上丝路南道",
+      "type": "land",
+      "periods": ["han", "tang"],
+      "description": "绕过塔克拉玛干沙漠南缘。",
+      "coordinates": [
+        [94.6618, 40.1421],
+        [89.9142, 40.5186],
+        [79.9222, 37.1122],
+        [75.9897, 39.4677]
+      ],
+      "source_ids": ["s1"]
+    },
+    {
+      "id": "r_sea_main",
+      "name": "海上丝绸之路主干道",
+      "type": "sea",
+      "periods": ["tang", "mongol"],
+      "description": "从中国东南沿海出发，经南中国海、印度洋，直达波斯湾和红海。",
+      "coordinates": [
+        [121.5439, 29.8683],
+        [118.6758, 24.8739],
+        [113.2644, 23.1291],
+        [102.2501, 2.1896],
+        [75.7804, 11.2588],
+        [56.4608, 27.0603],
+        [44.9782, 12.8023],
+        [29.9187, 31.2001]
+      ],
+      "source_ids": ["s3", "s4", "s5"]
+    }
+  ]
+}
