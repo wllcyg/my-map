@@ -37,6 +37,12 @@ Wikidata 是最快构建 MVP 节点的来源。后续我们将编写 Node.js 或
 解决路线是“僵硬直线”的问题。
 *   `geometry` (JSON/GeoJSON): 弃用简单的点对点数组，改存标准的 GeoJSON `LineString` 或 `MultiLineString`。这将允许我们存储一条包含几百个转折点的弯曲路线（例如完美贴合河西走廊地形的路径）。
 
+### 性能优化：PostGIS 空间扩展
+为了支撑地图的矩形范围查询（Bounding Box）并实现极致性能：
+*   **开启扩展**：在 Supabase 中运行 `CREATE EXTENSION postgis;`。
+*   **字段类型升级**：将原先简单存放经纬度坐标的字段类型，升级为标准的空间类型 `geometry(Point, 4326)`。
+*   **建立空间索引**：为该 geometry 字段建立 `GIST` 索引。有了这层空间索引，即使数据库达到百万级点位，区域查询依然是毫秒级响应。
+
 ---
 
 ## 阶段三：自动化脚本落库 (Data Ingestion)
@@ -77,6 +83,10 @@ filter: [
 
 ### 3. 路线平滑渲染 (Route Smoothing)
 *   对于尚未拥有真实地形路径的路线，可以在前端利用 `@turf/bezier-spline` 库。在把路线数据喂给地图前，先将点对点的直线转换为具有平滑曲率的弧线，能在视觉上大幅增加“路线感”。
+
+### 4. 传输架构优化：MVT 动态矢量切片 (Vector Tiles)
+*   如果引入海量数据后，单次网络请求获取完整的 GeoJSON（几十 MB）会导致前端严重卡顿甚至崩溃。
+*   **解决方案**：利用 PostgreSQL/PostGIS 原生的 `ST_AsMVT` 函数，在服务端根据用户当前的 Zoom / X / Y 瓦片坐标，实时将数据打包成轻量级的二进制 MVT 格式传给前端。这能让 MapLibre 引擎极其丝滑地渲染百万级节点而毫不费力，同时极大节约下行带宽。
 
 ## 执行顺序建议
 
