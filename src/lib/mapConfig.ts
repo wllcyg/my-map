@@ -8,6 +8,6 @@ export const mapConfig = {
     [-20, -10], // 西南角 (大致包括欧洲和北非)
     [150, 70],  // 东北角 (包括东亚和部分西伯利亚)
   ] as [[number, number], [number, number]],
-  // 一期先使用一个基础的浅色/古典底图
-  styleUrl: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+  // 采用弱化现代元素（无国界、无现代城市名）的暖色底图，更贴合历史主题
+  styleUrl: "https://basemaps.cartocdn.com/gl/voyager-nolabels-gl-style/style.json",
 };

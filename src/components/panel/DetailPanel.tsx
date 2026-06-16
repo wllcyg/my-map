@@ -220,6 +220,22 @@ export default function DetailPanel() {
                   </div>
                 </section>
               )}
+
+              {/* 数据来源 */}
+              <section className="pt-4 border-t border-slate-200/50">
+                <h4 className="text-[11px] font-bold tracking-wider text-slate-400 uppercase mb-3">参考文献 / 数据来源</h4>
+                {displayPlace.source_ids && displayPlace.source_ids.length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {displayPlace.source_ids.map((sourceId: string) => (
+                      <span key={sourceId} className="text-[12px] text-slate-500 bg-slate-100 px-2 py-1 rounded-md border border-slate-200/60">
+                        {sourceId}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-[12px] text-slate-400 italic">暂无明确文献出处</p>
+                )}
+              </section>
             </div>
           </div>
         </div>

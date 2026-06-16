@@ -61,9 +61,10 @@ export default function RoutesLayer({ map }: RoutesLayerProps) {
             "#0284c7", // 海路 (sky-600)
             "#94a3b8", // 默认
           ],
-          "line-width": 4,
-          // 根据 isActive 切换透明度
-          "line-opacity": ["case", ["==", ["get", "isActive"], true], 0.7, 0.15],
+          // 当前时期的路线更宽、非当前时期变细
+          "line-width": ["case", ["==", ["get", "isActive"], true], 4, 2],
+          // 当前时期的路线较清晰，非当前时期大幅透明化
+          "line-opacity": ["case", ["==", ["get", "isActive"], true], 0.8, 0.1],
         },
       });
     } else {

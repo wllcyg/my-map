@@ -8,7 +8,7 @@ interface PlacesLayerProps {
 }
 
 export default function PlacesLayer({ map }: PlacesLayerProps) {
-  const { data, activePeriod } = useMapStore();
+  const { data, activePeriod, selectedPlace } = useMapStore();
 
   useEffect(() => {
     if (!data) return;
@@ -28,6 +28,7 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
             type: place.type,
             importance: place.importance,
             isActive,
+            isSelected: place.id === selectedPlace?.id,
           },
           geometry: {
             type: "Point",
@@ -43,24 +44,56 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
         data: geojson,
       });
 
+      // 节点圆圈外发光图层（用于选中状态）
+      map.addLayer({
+        id: "places-circle-halo",
+        type: "circle",
+        source: "silk-road-places",
+        paint: {
+          "circle-radius": [
+            "match",
+            ["get", "importance"],
+            "high", 14,
+            "medium", 12,
+            "low", 10,
+            12,
+          ],
+          "circle-color": "#fcd34d", // amber-300
+          "circle-opacity": ["case", ["==", ["get", "isSelected"], true], 0.6, 0],
+          "circle-blur": 0.5,
+        },
+      });
+
       // 节点圆圈图层
       map.addLayer({
         id: "places-circle",
         type: "circle",
         source: "silk-road-places",
         paint: {
-          // 根据重要性设置圆圈大小
+          // 根据重要性设置圆圈大小，选中的再微放大
           "circle-radius": [
-            "match",
-            ["get", "importance"],
-            "high", 8,
-            "medium", 6,
-            "low", 4,
-            6, // 默认大小
+            "+",
+            [
+              "match",
+              ["get", "importance"],
+              "high", 7,
+              "medium", 5,
+              "low", 3,
+              5,
+            ],
+            ["case", ["==", ["get", "isSelected"], true], 2, 0]
           ],
-          "circle-color": "#ef4444", // red-500
-          "circle-stroke-width": 2,
-          "circle-stroke-color": "#ffffff",
+          // 根据类型赋予节点色彩
+          "circle-color": [
+            "match",
+            ["get", "type"],
+            "city", "#ea580c",     // orange-600
+            "region", "#059669",   // emerald-600
+            "landmark", "#7c3aed", // violet-600
+            "#64748b"              // slate-500
+          ],
+          "circle-stroke-width": ["case", ["==", ["get", "isSelected"], true], 3, 2],
+          "circle-stroke-color": ["case", ["==", ["get", "isSelected"], true], "#fcd34d", "#ffffff"],
           // 非当前时期节点半透明
           "circle-opacity": ["case", ["==", ["get", "isActive"], true], 1, 0.3],
           "circle-stroke-opacity": ["case", ["==", ["get", "isActive"], true], 1, 0.3],
@@ -90,7 +123,7 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
     } else {
       (map.getSource("silk-road-places") as GeoJSONSource).setData(geojson);
     }
-  }, [map, data, activePeriod]);
+  }, [map, data, activePeriod, selectedPlace]);
 
   useEffect(() => {
     // 处理交互事件
@@ -135,6 +168,7 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
       if (map.getStyle()) {
         if (map.getLayer("places-label")) map.removeLayer("places-label");
         if (map.getLayer("places-circle")) map.removeLayer("places-circle");
+        if (map.getLayer("places-circle-halo")) map.removeLayer("places-circle-halo");
         if (map.getSource("silk-road-places")) map.removeSource("silk-road-places");
       }
     };
