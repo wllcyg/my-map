@@ -63,9 +63,10 @@ export default function DetailPanel() {
       setPlacesAlongRoute([]);
 
       let isMounted = true;
+      let timer: ReturnType<typeof setTimeout>;
       
       // Defer calculation to prevent UI freezing right after opening the panel
-      setTimeout(() => {
+      timer = setTimeout(() => {
         import('@turf/turf').then(turf => {
           if (!isMounted) return;
           
@@ -109,6 +110,7 @@ export default function DetailPanel() {
 
       return () => {
         isMounted = false;
+        clearTimeout(timer);
       };
     } else {
       setRouteLength(0);

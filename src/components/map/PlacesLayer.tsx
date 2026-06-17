@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Map as MaplibreMap } from "maplibre-gl";
+import { useEffect, useRef, useState } from "react";
+import maplibregl, { Map as MaplibreMap } from "maplibre-gl";
 import { useMapStore } from "@/store/useMapStore";
 
 interface PlacesLayerProps {
@@ -9,6 +9,8 @@ interface PlacesLayerProps {
 export default function PlacesLayer({ map }: PlacesLayerProps) {
   const { activePeriod, selectedPlace } = useMapStore();
   const [styleLoadedTime, setStyleLoadedTime] = useState(0);
+  const hoveredStateId = useRef<string | null>(null);
+  const prevSelectedPlaceId = useRef<string | null>(null);
 
   useEffect(() => {
     const addLayers = () => {
@@ -20,6 +22,7 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
           tiles: [`${window.location.origin}/api/tiles/places/{z}/{x}/{y}`],
           minzoom: 2,
           maxzoom: 14,
+          promoteId: "id",
         });
       }
 
@@ -130,18 +133,42 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
     addLayers();
     map.on("styledata", addLayers);
 
-    const handleMouseEnter = () => {
+    const handleMouseMove = (e: any) => {
+      if (!e.features || e.features.length === 0) return;
       map.getCanvas().style.cursor = "pointer";
+      const feature = e.features[0];
+      const placeId = feature.id as string;
+      
+      if (placeId) {
+        if (hoveredStateId.current && hoveredStateId.current !== placeId) {
+          map.setFeatureState(
+            { source: 'silk-road-places-mvt', sourceLayer: 'places', id: hoveredStateId.current },
+            { hover: false }
+          );
+        }
+        hoveredStateId.current = placeId;
+        map.setFeatureState(
+          { source: 'silk-road-places-mvt', sourceLayer: 'places', id: hoveredStateId.current },
+          { hover: true }
+        );
+      }
     };
     
     const handleMouseLeave = () => {
       map.getCanvas().style.cursor = "";
+      if (hoveredStateId.current) {
+        map.setFeatureState(
+          { source: 'silk-road-places-mvt', sourceLayer: 'places', id: hoveredStateId.current },
+          { hover: false }
+        );
+        hoveredStateId.current = null;
+      }
     };
 
     const handleClick = (e: any) => {
       if (e.features && e.features.length > 0) {
         const feature = e.features[0];
-        const placeId = feature.properties.id;
+        const placeId = feature.id as string;
         const selected = useMapStore.getState().data?.places.find(p => p.id === placeId);
         if (selected) {
           useMapStore.getState().setSelectedPlace(selected);
@@ -161,21 +188,21 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
       }
     };
 
-    map.on("mouseenter", "places-circle", handleMouseEnter);
+    map.on("mousemove", "places-circle", handleMouseMove);
     map.on("mouseleave", "places-circle", handleMouseLeave);
     map.on("click", "places-circle", handleClick);
     
-    map.on("mouseenter", "places-label", handleMouseEnter);
+    map.on("mousemove", "places-label", handleMouseMove);
     map.on("mouseleave", "places-label", handleMouseLeave);
     map.on("click", "places-label", handleClick);
 
     return () => {
       map.off("styledata", addLayers);
-      map.off("mouseenter", "places-circle", handleMouseEnter);
+      map.off("mousemove", "places-circle", handleMouseMove);
       map.off("mouseleave", "places-circle", handleMouseLeave);
       map.off("click", "places-circle", handleClick);
 
-      map.off("mouseenter", "places-label", handleMouseEnter);
+      map.off("mousemove", "places-label", handleMouseMove);
       map.off("mouseleave", "places-label", handleMouseLeave);
       map.off("click", "places-label", handleClick);
 
@@ -188,10 +215,30 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
     };
   }, [map]);
 
+  // Synchronize selectedPlace to feature state
+  useEffect(() => {
+    if (!map.getSource("silk-road-places-mvt") || !styleLoadedTime) return;
+    
+    if (prevSelectedPlaceId.current) {
+      map.setFeatureState(
+        { source: 'silk-road-places-mvt', sourceLayer: 'places', id: prevSelectedPlaceId.current },
+        { selected: false }
+      );
+    }
+    
+    const currentId = selectedPlace?.id || null;
+    if (currentId) {
+      map.setFeatureState(
+        { source: 'silk-road-places-mvt', sourceLayer: 'places', id: currentId },
+        { selected: true }
+      );
+    }
+    prevSelectedPlaceId.current = currentId;
+  }, [selectedPlace, map, styleLoadedTime]);
+
   useEffect(() => {
     if (!map.getLayer("places-circle")) return;
 
-    const selectedPlaceId = selectedPlace?.id || "";
     const activePeriodOrNull = activePeriod === "all" ? null : activePeriod;
 
     const isActiveExpr = activePeriodOrNull === null 
@@ -212,8 +259,8 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
 
       map.setPaintProperty("places-circle-halo", "circle-opacity", [
         "case",
-        ["==", ["get", "id"], selectedPlaceId],
-        0.6,
+        ["boolean", ["feature-state", "selected"], false], 0.6,
+        ["boolean", ["feature-state", "hover"], false], 0.4,
         0
       ]);
       
@@ -229,22 +276,20 @@ export default function PlacesLayer({ map }: PlacesLayerProps) {
           1, 2,
           4,
         ],
-        ["case", ["==", ["get", "id"], selectedPlaceId], 2, 0]
+        ["case", ["boolean", ["feature-state", "selected"], false], 2, 0]
       ]);
       map.setPaintProperty("places-circle", "circle-stroke-width", [
         "case",
-        ["==", ["get", "id"], selectedPlaceId],
-        3,
+        ["boolean", ["feature-state", "selected"], false], 3,
         2
       ]);
       map.setPaintProperty("places-circle", "circle-stroke-color", [
         "case",
-        ["==", ["get", "id"], selectedPlaceId],
-        "#fcd34d",
+        ["boolean", ["feature-state", "selected"], false], "#fcd34d",
         "#ffffff"
       ]);
     }
-  }, [map, activePeriod, selectedPlace, styleLoadedTime]);
+  }, [map, activePeriod, styleLoadedTime]);
 
   return null;
 }

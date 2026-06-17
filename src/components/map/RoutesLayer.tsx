@@ -7,10 +7,11 @@ interface RoutesLayerProps {
 }
 
 export default function RoutesLayer({ map }: RoutesLayerProps) {
-  const { activePeriod, setSelectedRoute, data } = useMapStore();
-  const [hoveredRouteId, setHoveredRouteId] = useState<string | null>(null);
+  const { activePeriod, setSelectedRoute, selectedRoute, data } = useMapStore();
   const popupRef = useRef<maplibregl.Popup | null>(null);
   const [styleLoadedTime, setStyleLoadedTime] = useState(0);
+  const hoveredStateId = useRef<string | null>(null);
+  const prevSelectedRouteId = useRef<string | null>(null);
 
   useEffect(() => {
     const addLayers = () => {
@@ -22,6 +23,7 @@ export default function RoutesLayer({ map }: RoutesLayerProps) {
           tiles: [`${window.location.origin}/api/tiles/routes/{z}/{x}/{y}`],
           minzoom: 2,
           maxzoom: 14,
+          promoteId: "id",
         });
       }
 
@@ -65,10 +67,21 @@ export default function RoutesLayer({ map }: RoutesLayerProps) {
       if (!e.features || e.features.length === 0) return;
       map.getCanvas().style.cursor = "pointer";
       const feature = e.features[0];
-      const routeId = feature.properties.id;
+      const routeId = feature.id as string;
       
       if (routeId) {
-        setHoveredRouteId(routeId);
+        if (hoveredStateId.current && hoveredStateId.current !== routeId) {
+          map.setFeatureState(
+            { source: 'silk-road-routes-mvt', sourceLayer: 'routes', id: hoveredStateId.current },
+            { hover: false }
+          );
+        }
+        hoveredStateId.current = routeId;
+        map.setFeatureState(
+          { source: 'silk-road-routes-mvt', sourceLayer: 'routes', id: hoveredStateId.current },
+          { hover: true }
+        );
+
         if (popupRef.current) {
           popupRef.current
             .setLngLat(e.lngLat)
@@ -80,7 +93,13 @@ export default function RoutesLayer({ map }: RoutesLayerProps) {
 
     const handleMouseLeave = () => {
       map.getCanvas().style.cursor = "";
-      setHoveredRouteId(null);
+      if (hoveredStateId.current) {
+        map.setFeatureState(
+          { source: 'silk-road-routes-mvt', sourceLayer: 'routes', id: hoveredStateId.current },
+          { hover: false }
+        );
+        hoveredStateId.current = null;
+      }
       if (popupRef.current) {
         popupRef.current.remove();
       }
@@ -89,7 +108,7 @@ export default function RoutesLayer({ map }: RoutesLayerProps) {
     const handleClick = (e: any) => {
       if (!e.features || e.features.length === 0) return;
       const feature = e.features[0];
-      const routeId = feature.properties.id;
+      const routeId = feature.id as string;
       
       if (routeId && data) {
         const route = data.routes.find(r => r.id === routeId);
@@ -120,6 +139,28 @@ export default function RoutesLayer({ map }: RoutesLayerProps) {
     };
   }, [map, data, setSelectedRoute]);
 
+  // Synchronize selectedRoute to feature state
+  useEffect(() => {
+    if (!map.getSource("silk-road-routes-mvt") || !styleLoadedTime) return;
+    
+    if (prevSelectedRouteId.current) {
+      map.setFeatureState(
+        { source: 'silk-road-routes-mvt', sourceLayer: 'routes', id: prevSelectedRouteId.current },
+        { selected: false }
+      );
+    }
+    
+    const currentId = selectedRoute?.id || null;
+    if (currentId) {
+      map.setFeatureState(
+        { source: 'silk-road-routes-mvt', sourceLayer: 'routes', id: currentId },
+        { selected: true }
+      );
+    }
+    prevSelectedRouteId.current = currentId;
+  }, [selectedRoute, map, styleLoadedTime]);
+
+  // Update paint properties based on active period and feature states
   useEffect(() => {
     if (!map.getLayer("routes-line")) return;
 
@@ -133,29 +174,23 @@ export default function RoutesLayer({ map }: RoutesLayerProps) {
           ["in", activePeriodOrNull, ["get", "periods_str"]]
         ];
 
-    const isHoveredExpr = hoveredRouteId 
-      ? ["==", ["get", "id"], hoveredRouteId]
-      : false;
-
-    // Use try-catch or style check to avoid errors during style switch
     if (map.getStyle()) {
       map.setPaintProperty("routes-line", "line-width", [
         "case",
-        ["==", isActiveExpr, true],
-        4, // active
-        2  // inactive
+        ["boolean", ["feature-state", "selected"], false], 4,
+        ["==", isActiveExpr, true], 4,
+        2
       ]);
 
       map.setPaintProperty("routes-line", "line-opacity", [
         "case",
-        ["==", isHoveredExpr, true],
-        1.0, // hover
-        ["==", isActiveExpr, true],
-        0.8, // active
-        0.1  // inactive
+        ["boolean", ["feature-state", "hover"], false], 1.0,
+        ["boolean", ["feature-state", "selected"], false], 1.0,
+        ["==", isActiveExpr, true], 0.8,
+        0.1
       ]);
     }
-  }, [map, activePeriod, hoveredRouteId, styleLoadedTime]);
+  }, [map, activePeriod, styleLoadedTime]);
 
   return null;
 }

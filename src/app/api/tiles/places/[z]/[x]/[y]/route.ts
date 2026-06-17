@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { placesTileCache } from "@/lib/mvtCache";
 
 export async function GET(
   request: Request,
@@ -6,7 +7,24 @@ export async function GET(
 ) {
   try {
     const { z, x, y } = await params;
+    const cacheKey = `${z}/${x}/${y}`;
 
+    // 1. Check memory cache first
+    const cachedBuffer = placesTileCache.get(cacheKey);
+    if (cachedBuffer) {
+      if (cachedBuffer.length === 0) {
+        return new NextResponse(null, { status: 204 });
+      }
+      return new NextResponse(cachedBuffer as any, {
+        headers: {
+          "Content-Type": "application/vnd.mapbox-vector-tile",
+          "Access-Control-Allow-Origin": "*",
+          "Cache-Control": "public, max-age=3600, s-maxage=86400", // Enable browser and CDN caching
+        },
+      });
+    }
+
+    // 2. Fetch from Supabase
     const url = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/rpc/get_places_mvt`;
     const response = await fetch(url, {
       method: "POST",
@@ -53,14 +71,17 @@ export async function GET(
     }
 
     if (buffer.length === 0) {
+      placesTileCache.set(cacheKey, buffer);
       return new NextResponse(null, { status: 204 });
     }
+
+    placesTileCache.set(cacheKey, buffer);
 
     return new NextResponse(buffer as any, {
       headers: {
         "Content-Type": "application/vnd.mapbox-vector-tile",
         "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "no-cache",
+        "Cache-Control": "public, max-age=3600, s-maxage=86400",
       },
     });
   } catch (error: any) {
