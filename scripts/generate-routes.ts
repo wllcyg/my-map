@@ -21,7 +21,7 @@ const ITINERARIES = [
     name: 'Northern Land Route (北线)',
     type: 'land',
     periods: ['han', 'tang', 'mongol'],
-    waypoints: ['长安', '兰州', '敦煌', '吐鲁番', '喀什', '撒马尔罕', '木鹿', '德黑兰', '巴格达', '帕尔米拉', '大马士革', '安条克', '君士坦丁堡', '罗马']
+    waypoints: ['长安', '兰州', '敦煌', '吐鲁番', '喀什', '碎葉城', '撒马尔罕', '木鹿', '德黑兰', '巴格达', '帕尔米拉', '大马士革', '安条克', '君士坦丁堡', '罗马']
   },
   {
     name: 'Southern Land Route (南线)',

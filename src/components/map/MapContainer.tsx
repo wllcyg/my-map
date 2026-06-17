@@ -13,7 +13,7 @@ export default function MapContainer() {
   const mapRef = useRef<MaplibreMap | null>(null);
   const [mapInstance, setMapInstance] = useState<MaplibreMap | null>(null);
   
-  const { fetchMapData, isLoading: dataLoading, error, selectedPlace } = useMapStore();
+  const { fetchMapData, isLoading: dataLoading, error, selectedPlace, theme, activePeriod } = useMapStore();
 
   useEffect(() => {
     console.log("[MapContainer] 开始加载地图 API 数据...");
@@ -29,7 +29,7 @@ export default function MapContainer() {
     try {
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
-        style: mapConfig.styleUrl,
+        style: theme === "dark" ? mapConfig.styleUrlDark : mapConfig.styleUrlLight,
         center: mapConfig.initialCenter,
         zoom: mapConfig.initialZoom,
         minZoom: mapConfig.minZoom,
@@ -38,7 +38,8 @@ export default function MapContainer() {
         attributionControl: false,
       });
 
-      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+      map.addControl(new maplibregl.NavigationControl({ showCompass: true }), "bottom-right");
+      map.addControl(new maplibregl.FullscreenControl(), "top-right");
 
       map.on("load", () => {
         console.log("[MapContainer] 地图引擎加载完成 (load 事件)");
@@ -56,7 +57,13 @@ export default function MapContainer() {
     } catch (err) {
       console.error("[MapContainer] 地图初始化异常:", err);
     }
-  }, []);
+  }, []); // Run once on mount
+
+  useEffect(() => {
+    if (mapInstance) {
+      mapInstance.setStyle(theme === "dark" ? mapConfig.styleUrlDark : mapConfig.styleUrlLight);
+    }
+  }, [theme, mapInstance]);
 
   useEffect(() => {
     if (mapInstance && selectedPlace) {
@@ -70,10 +77,12 @@ export default function MapContainer() {
     }
   }, [selectedPlace, mapInstance]);
 
+  // (Playback Animation Removed)
+
   const isFullyLoaded = mapInstance !== null && !dataLoading && !error;
 
   return (
-    <div className="absolute inset-0 bg-slate-50 w-full h-full">
+    <div className={`absolute inset-0 w-full h-full ${theme === "dark" ? "bg-slate-900" : "bg-slate-50"}`}>
       <div className="absolute inset-0 w-full h-full" ref={mapContainerRef} />
       
       {dataLoading && !error && (

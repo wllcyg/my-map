@@ -9,5 +9,6 @@ export const mapConfig = {
     [150, 70],  // 东北角 (包括东亚和部分西伯利亚)
   ] as [[number, number], [number, number]],
   // 采用弱化现代元素（无国界、无现代城市名）的暖色底图，更贴合历史主题
-  styleUrl: "https://basemaps.cartocdn.com/gl/voyager-nolabels-gl-style/style.json",
+  styleUrlLight: "https://tiles.stadiamaps.com/styles/stamen_watercolor.json",
+  styleUrlDark: "https://tiles.stadiamaps.com/styles/alidade_smooth_dark.json",
 };

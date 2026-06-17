@@ -1,86 +1,161 @@
-import { useEffect } from "react";
-import { Map as MaplibreMap, GeoJSONSource } from "maplibre-gl";
+import { useEffect, useRef, useState } from "react";
+import maplibregl, { Map as MaplibreMap } from "maplibre-gl";
 import { useMapStore } from "@/store/useMapStore";
-import { isRouteInPeriod } from "@/lib/periodFilter";
 
 interface RoutesLayerProps {
   map: MaplibreMap;
 }
 
 export default function RoutesLayer({ map }: RoutesLayerProps) {
-  const { data, activePeriod } = useMapStore();
+  const { activePeriod, setSelectedRoute, data } = useMapStore();
+  const [hoveredRouteId, setHoveredRouteId] = useState<string | null>(null);
+  const popupRef = useRef<maplibregl.Popup | null>(null);
+  const [styleLoadedTime, setStyleLoadedTime] = useState(0);
 
   useEffect(() => {
-    if (!data) return;
+    const addLayers = () => {
+      if (!map.getStyle()) return;
 
-    const activePeriodOrNull = activePeriod === "all" ? null : activePeriod;
+      if (!map.getSource("silk-road-routes-mvt")) {
+        map.addSource("silk-road-routes-mvt", {
+          type: "vector",
+          tiles: [`${window.location.origin}/api/tiles/routes/{z}/{x}/{y}`],
+          minzoom: 2,
+          maxzoom: 14,
+        });
+      }
 
-    // 每次数据或时期变化时，重新构造 GeoJSON，用 periodFilter 计算是否激活
-    const geojson: GeoJSON.FeatureCollection = {
-      type: "FeatureCollection",
-      features: data.routes.map((route) => {
-        const isActive = isRouteInPeriod(route, activePeriodOrNull);
-        return {
-          type: "Feature",
-          properties: {
-            id: route.id,
-            type: route.type,
-            name: route.name,
-            isActive,
+      if (!map.getLayer("routes-line")) {
+        map.addLayer({
+          id: "routes-line",
+          type: "line",
+          source: "silk-road-routes-mvt",
+          "source-layer": "routes",
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
           },
-          geometry: {
-            type: "LineString",
-            coordinates: route.coordinates,
+          paint: {
+            "line-color": [
+              "match",
+              ["get", "type"],
+              "land", "#d97706",
+              "sea", "#0284c7",
+              "#94a3b8",
+            ],
+            "line-width": 2,
+            "line-opacity": 0.8,
           },
-        };
-      }),
+        });
+      }
+      
+      setStyleLoadedTime(Date.now());
     };
 
-    if (!map.getSource("silk-road-routes")) {
-      map.addSource("silk-road-routes", {
-        type: "geojson",
-        data: geojson,
-      });
+    addLayers();
+    map.on("styledata", addLayers);
 
-      map.addLayer({
-        id: "routes-line",
-        type: "line",
-        source: "silk-road-routes",
-        layout: {
-          "line-join": "round",
-          "line-cap": "round",
-        },
-        paint: {
-          // 根据类型赋予不同颜色
-          "line-color": [
-            "match",
-            ["get", "type"],
-            "land",
-            "#d97706", // 陆路 (amber-600)
-            "sea",
-            "#0284c7", // 海路 (sky-600)
-            "#94a3b8", // 默认
-          ],
-          // 当前时期的路线更宽、非当前时期变细
-          "line-width": ["case", ["==", ["get", "isActive"], true], 4, 2],
-          // 当前时期的路线较清晰，非当前时期大幅透明化
-          "line-opacity": ["case", ["==", ["get", "isActive"], true], 0.8, 0.1],
-        },
-      });
-    } else {
-      (map.getSource("silk-road-routes") as GeoJSONSource).setData(geojson);
-    }
-  }, [map, data, activePeriod]);
+    popupRef.current = new maplibregl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+      className: "route-tooltip"
+    });
 
-  // 组件卸载时清理图层（如果地图实例还没销毁的话）
-  useEffect(() => {
-    return () => {
-      if (map.getStyle()) {
-        if (map.getLayer("routes-line")) map.removeLayer("routes-line");
-        if (map.getSource("silk-road-routes")) map.removeSource("silk-road-routes");
+    const handleMouseMove = (e: any) => {
+      if (!e.features || e.features.length === 0) return;
+      map.getCanvas().style.cursor = "pointer";
+      const feature = e.features[0];
+      const routeId = feature.properties.id;
+      
+      if (routeId) {
+        setHoveredRouteId(routeId);
+        if (popupRef.current) {
+          popupRef.current
+            .setLngLat(e.lngLat)
+            .setHTML(`<div class="px-2 py-1 text-sm font-medium text-slate-800">${feature.properties.name || "未知路线"}</div>`)
+            .addTo(map);
+        }
       }
     };
-  }, [map]);
+
+    const handleMouseLeave = () => {
+      map.getCanvas().style.cursor = "";
+      setHoveredRouteId(null);
+      if (popupRef.current) {
+        popupRef.current.remove();
+      }
+    };
+
+    const handleClick = (e: any) => {
+      if (!e.features || e.features.length === 0) return;
+      const feature = e.features[0];
+      const routeId = feature.properties.id;
+      
+      if (routeId && data) {
+        const route = data.routes.find(r => r.id === routeId);
+        if (route) {
+          setSelectedRoute(route);
+        }
+      }
+    };
+
+    map.on("mousemove", "routes-line", handleMouseMove);
+    map.on("mouseleave", "routes-line", handleMouseLeave);
+    map.on("click", "routes-line", handleClick);
+
+    return () => {
+      map.off("styledata", addLayers);
+      map.off("mousemove", "routes-line", handleMouseMove);
+      map.off("mouseleave", "routes-line", handleMouseLeave);
+      map.off("click", "routes-line", handleClick);
+
+      if (popupRef.current) {
+        popupRef.current.remove();
+      }
+
+      if (map.getStyle()) {
+        if (map.getLayer("routes-line")) map.removeLayer("routes-line");
+        if (map.getSource("silk-road-routes-mvt")) map.removeSource("silk-road-routes-mvt");
+      }
+    };
+  }, [map, data, setSelectedRoute]);
+
+  useEffect(() => {
+    if (!map.getLayer("routes-line")) return;
+
+    const activePeriodOrNull = activePeriod === "all" ? null : activePeriod;
+    const isActiveExpr = activePeriodOrNull === null
+      ? true
+      : [
+          "any",
+          ["!", ["has", "periods_str"]],
+          ["==", ["get", "periods_str"], null],
+          ["in", activePeriodOrNull, ["get", "periods_str"]]
+        ];
+
+    const isHoveredExpr = hoveredRouteId 
+      ? ["==", ["get", "id"], hoveredRouteId]
+      : false;
+
+    // Use try-catch or style check to avoid errors during style switch
+    if (map.getStyle()) {
+      map.setPaintProperty("routes-line", "line-width", [
+        "case",
+        ["==", isActiveExpr, true],
+        4, // active
+        2  // inactive
+      ]);
+
+      map.setPaintProperty("routes-line", "line-opacity", [
+        "case",
+        ["==", isHoveredExpr, true],
+        1.0, // hover
+        ["==", isActiveExpr, true],
+        0.8, // active
+        0.1  // inactive
+      ]);
+    }
+  }, [map, activePeriod, hoveredRouteId, styleLoadedTime]);
 
   return null;
 }

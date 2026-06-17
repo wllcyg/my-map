@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { MapData, PeriodId, Place } from "@/types/map";
+import { MapData, PeriodId, Place, Route } from "@/types/map";
 
 interface MapState {
   data: MapData | null;
@@ -7,11 +7,15 @@ interface MapState {
   error: string | null;
   activePeriod: PeriodId | "all";
   selectedPlace: Place | null;
+  selectedRoute: Route | null;
+  theme: "light" | "dark";
 
   // Actions
   fetchMapData: () => Promise<void>;
   setActivePeriod: (period: PeriodId | "all") => void;
   setSelectedPlace: (place: Place | null) => void;
+  setSelectedRoute: (route: Route | null) => void;
+  setTheme: (theme: "light" | "dark") => void;
 }
 
 export const useMapStore = create<MapState>((set) => ({
@@ -20,6 +24,8 @@ export const useMapStore = create<MapState>((set) => ({
   error: null,
   activePeriod: "tang", // Day 3 需求：默认选中唐代
   selectedPlace: null,
+  selectedRoute: null,
+  theme: "light",
 
   fetchMapData: async () => {
     try {
@@ -37,5 +43,7 @@ export const useMapStore = create<MapState>((set) => ({
   },
 
   setActivePeriod: (period) => set({ activePeriod: period }),
-  setSelectedPlace: (place) => set({ selectedPlace: place }),
+  setSelectedPlace: (place) => set({ selectedPlace: place, selectedRoute: null }),
+  setSelectedRoute: (route) => set({ selectedRoute: route, selectedPlace: null }),
+  setTheme: (theme) => set({ theme }),
 }));

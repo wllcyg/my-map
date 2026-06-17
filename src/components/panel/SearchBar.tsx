@@ -50,8 +50,7 @@ export default function SearchBar() {
 
         {showDropdown && (
           <div className="absolute top-full mt-2 w-full bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-100 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-            {/* dropdown list code will be kept implicitly because we only replace the top half */}
-          <div className="max-h-72 overflow-y-auto custom-scrollbar p-2">
+            <div className="max-h-72 overflow-y-auto custom-scrollbar p-2">
             {results.length > 0 ? (
               <div className="flex flex-col gap-1">
                 {results.map((place) => (
